@@ -129,13 +129,13 @@ app.post('/emprestimos', (req, res) => {
         return;
     }
 
-    if(emprestimo.data_emprestimo == null){
+    if (emprestimo.data_emprestimo == null) {
         let currentDate = new Date();
-        emprestimo.data_emprestimo = currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + "/" + currentDate.getFullYear(); 
+        emprestimo.data_emprestimo = currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + "/" + currentDate.getFullYear();
     }
 
-    db.run("INSERT INTO emprestimo (id_livro, id_cliente, data_emprestimo) VALUES (?,?,?)", 
-    [emprestimo.id_cliente, emprestimo.id_livro, emprestimo.data_emprestimo],
+    db.run("INSERT INTO emprestimo (id_livro, id_cliente, data_emprestimo) VALUES (?,?,?)",
+        [emprestimo.id_cliente, emprestimo.id_livro, emprestimo.data_emprestimo],
         function (err) {
             if (err) {
                 res.status(500).json({ "error": err.message });
@@ -148,7 +148,7 @@ app.post('/emprestimos', (req, res) => {
 app.post('/clientes', (req, res) => {
     let cliente = req.body;
 
-    if (cliente.nome == null ) {
+    if (cliente.nome == null) {
         res.status(400).json({ "error": "Está faltando dados para criar um cliente, verifique e tente novamente! Dados obrigatórios: nome!" });
         return;
     }
@@ -174,20 +174,20 @@ app.put('/livros/:id', (req, res) => {
                 res.status(404).json({ "error": "Não existe livro com o id informado" });
                 return;
             }
-        }
-    );
 
-    const alteracoes = Object.entries(req.body).map(([key, value]) => key + " = '" + value + "'");
+            const alteracoes = Object.entries(req.body).map(([key, value]) => key + " = '" + value + "'");
 
-    let query = `UPDATE livro SET ${alteracoes} WHERE id = ${req.params.id}`;
+            let query = `UPDATE livro SET ${alteracoes} WHERE id = ${req.params.id}`;
 
-    db.run(query,
-        function (err) {
-            if (err) {
-                res.status(500).json({ "error": err.message });
-                return;
-            }
-            res.status(200).send();
+            db.run(query,
+                function (err) {
+                    if (err) {
+                        res.status(500).json({ "error": err.message });
+                        return;
+                    }
+                    res.status(200).json({ "Message": "Livro atualizado com sucesso!" });
+                }
+            );
         }
     );
 });
@@ -203,20 +203,20 @@ app.put('/proprietarios/:id', (req, res) => {
                 res.status(404).json({ "error": "Não existe proprietario com o id informado" });
                 return;
             }
-        }
-    );
 
-    const alteracoes = Object.entries(req.body).map(([key, value]) => key + " = '" + value + "'");
+            const alteracoes = Object.entries(req.body).map(([key, value]) => key + " = '" + value + "'");
 
-    let query = `UPDATE proprietario SET ${alteracoes} WHERE id = ${req.params.id}`;
+            let query = `UPDATE proprietario SET ${alteracoes} WHERE id = ${req.params.id}`;
 
-    db.run(query,
-        function (err) {
-            if (err) {
-                res.status(500).json({ "error": err.message });
-                return;
-            }
-            res.status(200).send();
+            db.run(query,
+                function (err) {
+                    if (err) {
+                        res.status(500).json({ "error": err.message });
+                        return;
+                    }
+                    res.status(200).send();
+                }
+            );
         }
     );
 });
@@ -233,20 +233,20 @@ app.put('/emprestimos/:id', (req, res) => {
                 res.status(404).json({ "error": "Não existe emprestimo com o id informado" });
                 return;
             }
-        }
-    );
 
-    const alteracoes = Object.entries(req.body).map(([key, value]) => key + " = '" + value + "'");
+            const alteracoes = Object.entries(req.body).map(([key, value]) => key + " = '" + value + "'");
 
-    let query = `UPDATE emprestimo SET ${alteracoes} WHERE id = ${req.params.id}`;
+            let query = `UPDATE emprestimo SET ${alteracoes} WHERE id = ${req.params.id}`;
 
-    db.run(query,
-        function (err) {
-            if (err) {
-                res.status(500).json({ "error": err.message });
-                return;
-            }
-            res.status(200).send();
+            db.run(query,
+                function (err) {
+                    if (err) {
+                        res.status(500).json({ "error": err.message });
+                        return;
+                    }
+                    res.status(200).send();
+                }
+            );
         }
     );
 });
@@ -264,16 +264,16 @@ app.delete('/livros/:id', (req, res) => {
                 res.status(404).json({ "error": "Não existe livro com o id informado" });
                 return;
             }
-        }
-    );
 
-    db.run("DELETE FROM livro WHERE id = ?", req.params.id,
-        (err, row) => {
-            if (err) {
-                res.status(500).json({ "error": err.message });
-                return;
-            }
-            res.status(200).send();
+            db.run("DELETE FROM livro WHERE id = ?", req.params.id,
+                (err, row) => {
+                    if (err) {
+                        res.status(500).json({ "error": err.message });
+                        return;
+                    }
+                    res.status(200).send();
+                }
+            );
         }
     );
 });
@@ -291,16 +291,15 @@ app.delete('/proprietarios/:id', (req, res) => {
                 res.status(404).json({ "error": "Não existe proprietario com o id informado" });
                 return;
             }
-        }
-    );
-
-    db.run("DELETE FROM proprietario WHERE id = ?", req.params.id,
-        (err, row) => {
-            if (err) {
-                res.status(500).json({ "error": err.message });
-                return;
-            }
-            res.status(200).send();
+            db.run("DELETE FROM proprietario WHERE id = ?", req.params.id,
+                (err, row) => {
+                    if (err) {
+                        res.status(500).json({ "error": err.message });
+                        return;
+                    }
+                    res.status(200).send();
+                }
+            );
         }
     );
 });
@@ -317,16 +316,15 @@ app.delete('/emprestimos/:id', (req, res) => {
                 res.status(404).json({ "error": "Não existe emprestimo com o id informado" });
                 return;
             }
-        }
-    );
-
-    db.run("DELETE FROM emprestimo WHERE id = ?", req.params.id,
-        (err, row) => {
-            if (err) {
-                res.status(500).json({ "error": err.message });
-                return;
-            }
-            res.status(200).send();
+            db.run("DELETE FROM emprestimo WHERE id = ?", req.params.id,
+                (err, row) => {
+                    if (err) {
+                        res.status(500).json({ "error": err.message });
+                        return;
+                    }
+                    res.status(200).send();
+                }
+            );
         }
     );
 });
@@ -343,16 +341,15 @@ app.delete('/clientes/:id', (req, res) => {
                 res.status(404).json({ "error": "Não existe cliente com o id informado" });
                 return;
             }
-        }
-    );
-
-    db.run("DELETE FROM cliente WHERE id = ?", req.params.id,
-        (err, row) => {
-            if (err) {
-                res.status(500).json({ "error": err.message });
-                return;
-            }
-            res.status(200).send();
+            db.run("DELETE FROM cliente WHERE id = ?", req.params.id,
+                (err, row) => {
+                    if (err) {
+                        res.status(500).json({ "error": err.message });
+                        return;
+                    }
+                    res.status(200).send();
+                }
+            );
         }
     );
 });
