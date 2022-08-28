@@ -175,10 +175,15 @@ app.put('/livros/:id', (req, res) => {
                 return;
             }
 
-            const alteracoes = Object.entries(req.body).map(([key, value]) => key + " = '" + value + "'");
+            let alteracoes = [];
+
+            let livro = req.body;
+            if(livro.titulo) alteracoes.push(`titulo = "${livro.titulo}"`);
+            if(livro.autor) alteracoes.push(`autor = "${livro.autor}"`); 
+            if(livro.proprietario) alteracoes.push(`proprietario =${livro.proprietario}`);
 
             let query = `UPDATE livro SET ${alteracoes} WHERE id = ${req.params.id}`;
-
+            
             db.run(query,
                 function (err) {
                     if (err) {
@@ -204,7 +209,12 @@ app.put('/proprietarios/:id', (req, res) => {
                 return;
             }
 
-            const alteracoes = Object.entries(req.body).map(([key, value]) => key + " = '" + value + "'");
+
+            let alteracoes = [];
+
+            let proprietario = req.body;
+            if(proprietario.nome) alteracoes.push(`nome = "${proprietario.nome}"`);
+            if(proprietario.email) alteracoes.push(`email = "${proprietario.email}"`); 
 
             let query = `UPDATE proprietario SET ${alteracoes} WHERE id = ${req.params.id}`;
 
@@ -234,7 +244,12 @@ app.put('/emprestimos/:id', (req, res) => {
                 return;
             }
 
-            const alteracoes = Object.entries(req.body).map(([key, value]) => key + " = '" + value + "'");
+            let alteracoes = [];
+
+            let emprestimo = req.body;
+            if(emprestimo.id_cliente) alteracoes.push(`id_cliente = "${emprestimo.id_cliente}"`);
+            if(emprestimo.id_livro) alteracoes.push(`id_livro = "${emprestimo.id_livro}"`); 
+            if(emprestimo.data_emprestimo) alteracoes.push(`data_emprestimo =${emprestimo.data_emprestimo}`);
 
             let query = `UPDATE emprestimo SET ${alteracoes} WHERE id = ${req.params.id}`;
 
